@@ -1,0 +1,27 @@
+language: ruby
+rvm:
+  - 2.5.3
+before_script:
+  - bundle exec rake db:create --all
+  - bundle exec rake db:migrate
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
+  
+before_install:
+  - gem install bundler -v 2.0.1
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+install:
+  - bundle install
+  - npm i -g yarn
+  - yarn install
+script:
+  - RAILS_ENV=test bundle exec rake ci:tests
+addons:
+  chrome: stable
+services:
+  - postgresql
+notifications:
+  email: false
