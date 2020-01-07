@@ -13,6 +13,18 @@ module ReactRailsApp
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource(
+          "*",
+          headers: :any,
+          expose: ["Authorization"],
+          methods: %i[get patch put delete post options show]
+        )
+      end
+    end
+
     config.generators do |g|
       g.assets false
       g.test_framework :rspec,

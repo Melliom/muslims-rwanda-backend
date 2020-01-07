@@ -6,7 +6,7 @@ unless Rails.env.production?
   Coveralls::RakeTask.new
   namespace :ci do
     RSpec::Core::RakeTask.new(:spec) do |t|
-        t.pattern = Dir.glob(['spec/models', 'spec/controllers'])
+      t.pattern = Dir.glob(["spec/models", "spec/controllers"])
     end
     desc "Run all tests and generate a merged coverage report"
     task tests: [:spec, "coveralls:push"]
