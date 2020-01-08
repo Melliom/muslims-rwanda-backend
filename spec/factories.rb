@@ -5,4 +5,9 @@ FactoryBot.define do
     title { "yoo" }
     content { "just test" }
   end
+  factory :user do
+    email { "hadad@gmail.com" }
+    password { "J*uD$J2l^v6Q" }
+    confirmed_at { Time.zone.now }
+  end
 end

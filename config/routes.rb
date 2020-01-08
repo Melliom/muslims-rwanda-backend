@@ -1,7 +1,19 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'hello/index'
+  devise_for :users,
+             path: "",
+             path_names: {
+               sign_in: "login",
+               sign_out: "logout",
+               registration: "signup"
+             },
+             controllers: {
+               confirmations: "confirmations",
+               sessions: "sessions",
+               registrations: "registrations"
+             }
+  get "hello/index"
   root "home#index"
   namespace :v1, defaults: { format: "json" } do
     get "things", to: "things#index"
