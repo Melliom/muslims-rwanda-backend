@@ -61,6 +61,8 @@ group :development do
   gem "spring-watcher-listen", "~> 2.0.0"
   gem "rubocop-performance"
   gem "rubocop-rails"
+  gem "pry"
+  gem "irbtools"
 end
 
 group :test do
