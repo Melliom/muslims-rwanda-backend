@@ -17,4 +17,28 @@ class ApplicationController < ActionController::Base
           details: errors,
       }, status: status
   end
+
+  def generate_token(email)
+    exp = Time.now.to_i + 2 * (3600 * 24)
+    payload = { data: email, exp: exp }
+    JWT.encode(payload, ENV["DEVISE_SECRET_KEY"], "HS256")
+  end
+
+  def decode_token(token)
+    decoded_token = JWT.decode token, ENV["DEVISE_SECRET_KEY"], true, { algorithm: "HS256" }
+    {
+      status: true,
+      token: decoded_token
+    }
+  rescue JWT::ExpiredSignature
+    {
+      status: false,
+      message: "Token expired"
+    }
+  rescue JWT::VerificationError
+    {
+      status: false,
+      message: "Invalid token"
+    }
+  end
 end
