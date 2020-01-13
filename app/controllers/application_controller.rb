@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit
+  before_action :authenticate_user!
+
   def render_resource(resource)
     if resource.errors.empty?
       render json: current_user
