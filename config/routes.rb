@@ -13,6 +13,9 @@ Rails.application.routes.draw do
                sessions: "sessions",
                registrations: "registrations"
              }
+  devise_scope :user do
+    post "/invite-admin", to: "registrations#create_admin"
+  end
   get "hello/index"
   root "home#index"
   namespace :v1, defaults: { format: "json" } do

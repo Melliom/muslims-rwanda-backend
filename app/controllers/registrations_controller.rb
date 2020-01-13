@@ -2,7 +2,7 @@
 
 class RegistrationsController < Devise::RegistrationsController
   respond_to :json
-  skip_before_action :verify_authenticity_token, only: :create
+  skip_before_action :verify_authenticity_token, only: [:create, :create_admin]
 
   def create
     build_resource(sign_up_params)
@@ -18,6 +18,28 @@ class RegistrationsController < Devise::RegistrationsController
     end
     resource.save && sign_in(resource)
     render_resource(resource)
+  end
+
+  def create_admin
+    email = params[:email]
+    return render json: { message: "Email must be provided" }, status: :bad_request if email.empty?
+    token = generate_token(email)
+    admin = User.find_by(email: email)
+
+    if admin.blank?
+      @admin = User.new(email: email, password: SecureRandom.hex, confirmation_token: token, confirmed_at: Time.zone.now)
+      @admin.admin!
+      if @admin.save
+        UserMailer.with(email: email, token: token).invite_admin_mail.deliver_later
+        render json: { message: "Email successfuly sent to #{email}" }, status: :ok
+      else
+        render json: { message: @admin.errors.full_messages }, status: :bad_request
+      end
+    else
+      render json: { message: "Email already exists" }, status: :bad_request
+    end
+  rescue => exception
+    render json: { message: exception }, status: :bad_request
   end
 
   def sign_up_params
