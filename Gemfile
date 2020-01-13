@@ -42,6 +42,8 @@ gem "figaro"
 
 gem "devise-jwt"
 gem "rack-cors"
+gem "pundit"
+
 
 
 # Reduces boot times through caching; required in config/boot.rb
