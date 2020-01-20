@@ -15,6 +15,8 @@ Rails.application.routes.draw do
              }
   devise_scope :user do
     post "/invite-admin", to: "registrations#create_admin"
+    get "/invite-admin", to: "registrations#verify_admin_token"
+    put "/signup/admin", to: "registrations#register_admin"
   end
   get "hello/index"
   root "home#index"

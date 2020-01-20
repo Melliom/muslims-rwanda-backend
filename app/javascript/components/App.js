@@ -12,6 +12,7 @@ const App = () => {
         <Switch>
           <Route exact path="/" component={Button} />
           <Route exact path="/try" component={HelloWorld} />
+          <Route exact path="/invite-admin" component={HelloWorld} />
         </Switch>
       </Router>
     </Provider>

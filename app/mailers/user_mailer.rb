@@ -7,7 +7,7 @@ class UserMailer < ApplicationMailer
     @email = params[:email]
     token = params[:token]
     base_url  = Rails.env.development? ? ENV["DEV_URL"] : ENV["PRODUCTION_URL"]
-    @url = "#{base_url}/admin-invite?token=#{token}"
+    @url = "#{base_url}/invite-admin?token=#{token}"
     mail(to: @email, subject: "You have been invited to join Muslim Rwanda App")
   end
 end

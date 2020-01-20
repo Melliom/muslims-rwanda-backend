@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
 
   def render_resource(resource)
     if resource.errors.empty?
+      token = Warden::JWTAuth::UserEncoder.new.call(current_user, :user, "JWT_AUD").first
+      token = "Bearer #{token}"
+      response.set_header("Authorization", token)
       render json: current_user
     else
       validation_error(resource)
@@ -31,7 +34,7 @@ class ApplicationController < ActionController::Base
     decoded_token = JWT.decode token, ENV["DEVISE_SECRET_KEY"], true, { algorithm: "HS256" }
     {
       status: true,
-      token: decoded_token
+      data: decoded_token.first["data"]
     }
   rescue JWT::ExpiredSignature
     {

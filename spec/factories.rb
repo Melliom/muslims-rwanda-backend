@@ -10,6 +10,12 @@ FactoryBot.define do
     password { "J*uD$J2l^v6Q" }
     confirmed_at { Time.zone.now }
   end
+  factory :admin, class: "User" do
+    email { "admin@gmail.com" }
+    password { "J*uD$J2l^v6Q" }
+    confirmed_at { Time.zone.now }
+    roles { "admin" }
+  end
   factory :super_admin, class: "User" do
     email { "super_admin@gmail.com" }
     password { "J*uD$J2l^v6Q" }
