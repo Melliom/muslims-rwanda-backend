@@ -11,7 +11,8 @@ Rails.application.routes.draw do
              controllers: {
                confirmations: "confirmations",
                sessions: "sessions",
-               registrations: "registrations"
+               registrations: "registrations",
+               passwords: "passwords"
              }
   devise_scope :user do
     post "/invite-admin", to: "registrations#create_admin"
