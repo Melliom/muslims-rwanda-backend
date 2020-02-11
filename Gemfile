@@ -44,6 +44,8 @@ gem "devise-jwt"
 gem "rack-cors"
 gem "pundit"
 
+gem 'valid_url'
+
 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -74,6 +76,7 @@ group :test do
   gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "coveralls", require: false
+  gem 'faker'
   # Adds support for Capybara system testing and selenium driver
   gem "capybara", ">= 2.15"
   gem "selenium-webdriver"
