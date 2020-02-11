@@ -46,7 +46,7 @@ gem "pundit"
 
 gem 'valid_url'
 
-
+gem 'cloudinary'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false
