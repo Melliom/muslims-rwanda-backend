@@ -12,4 +12,9 @@ class UserPolicy < ApplicationPolicy
     raise Pundit::NotAuthorizedError, "You are not authorized to perform this action." unless @user.super_admin?
     true
   end
+
+  def admin?
+    raise Pundit::NotAuthorizedError, "You are not authorized to perform this action." unless @user.super_admin? || @user.admin?
+    true
+  end
 end

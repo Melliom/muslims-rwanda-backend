@@ -44,7 +44,7 @@ class RegistrationsController < Devise::RegistrationsController
       render json: { message: "Email already exists" }, status: :bad_request
     end
   rescue => exception
-    render json: { message: exception }, status: exception.is_a?(Pundit::NotAuthorizedError) ? :unauthorized : :bad_request
+    render_exception exception
   end
 
   def verify_admin_token

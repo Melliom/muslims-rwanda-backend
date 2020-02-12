@@ -5,6 +5,9 @@ FactoryBot.define do
     names { Faker::Name.name  }
     tel { "0789863456" }
     address { Faker::Address.street_address  }
-    avatar { Faker::Internet.url  }
+
+    trait :with_avatar do
+      avatar { fixture_file_upload(Rails.root.join("spec", "support", "assets", "abd.jpg"), "image/jpg") }
+    end
   end
 end
