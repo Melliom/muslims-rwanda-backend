@@ -5,6 +5,7 @@ require "spec_helper"
 ENV["RAILS_ENV"] ||= "test"
 
 require File.expand_path("../config/environment", __dir__)
+require "active_storage_validations/matchers"
 
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
@@ -40,6 +41,9 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.infer_spec_type_from_file_location!
 
+  # for active storage testing validation
+  config.include ActiveStorageValidations::Matchers
+
   # For Devise > 4.1.1
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
@@ -54,6 +58,10 @@ RSpec.configure do |config|
   # `post` in specs under `spec/controllers`.
 
   config.include FactoryBot::Syntax::Methods
+
+  FactoryBot::SyntaxRunner.class_eval do
+    include ActionDispatch::TestProcess
+  end
 
   #
   # You can disable this behaviour by removing the line below, and instead

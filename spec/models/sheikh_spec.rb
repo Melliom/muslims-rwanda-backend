@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Sheikh, type: :model do
   before :each do
-    @sheikh = FactoryBot.build(:sheikh)
+    @sheikh = FactoryBot.build(:sheikh, :with_avatar)
   end
 
   # a better way of initializing user
@@ -38,14 +38,9 @@ RSpec.describe Sheikh, type: :model do
     end
   end
 
-  it "avatar should be a valid url" do
-    @sheikh.avatar = "99349"
-    @sheikh.save
-    expect(@sheikh.errors[:avatar].first).to eq("is an invalid URL")
-    expect(@sheikh).to_not be_valid
-  end
-
   it "should be saved successfully" do
     expect(@sheikh).to be_valid
   end
+
+  it { is_expected.to validate_content_type_of(:avatar).rejecting("text/plain", "text/xml") }
 end
