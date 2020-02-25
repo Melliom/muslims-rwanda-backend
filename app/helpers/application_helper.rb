@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def render_exception(exception)
-    render json: { message: exception }, status: exception.is_a?(Pundit::NotAuthorizedError) ? :unauthorized : :bad_request
+  def render_exception(exception, status = :bad_request)
+    status = :unauthorized if exception.is_a?(Pundit::NotAuthorizedError)
+    render json: { message: exception }, status: status
   end
 end

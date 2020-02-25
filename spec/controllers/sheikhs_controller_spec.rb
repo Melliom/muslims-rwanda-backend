@@ -14,7 +14,7 @@ RSpec.describe V1::SheikhsController, type: :controller do
     end
   end
 
-  describe "GET #create" do
+  describe "POST #create" do
     context "should fail without authorization" do
       login_user
       it "returns http unauthorized" do
@@ -41,10 +41,33 @@ RSpec.describe V1::SheikhsController, type: :controller do
     end
   end
 
-  describe "GET #update" do
-    xit "returns http success" do
-      get :update
-      expect(response).to have_http_status(:success)
+  describe "PUT #update" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        put :update, params: @sheikh.as_json.merge({ "id" => 1 })
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should fail when id is not found" do
+      login_admin
+      it "returns http not_found" do
+        put :update, params: @sheikh.as_json.merge({ "id" => 110 })
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Sheikh with 'id'=110")
+      end
+    end
+
+    context "should update successfully" do
+      login_admin
+      it "returns http ok" do
+        @sheikh.save
+        put :update, params: @sheikh.as_json.merge({ "id" => @sheikh.id, names: "Hadad Bwenge" })
+        expect(response).to have_http_status(:ok)
+        expect(json_body[:names]).to eq("Hadad Bwenge")
+      end
     end
   end
 
