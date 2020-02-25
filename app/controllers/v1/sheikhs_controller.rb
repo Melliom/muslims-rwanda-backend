@@ -22,6 +22,17 @@ class V1::SheikhsController < ApplicationController
   end
 
   def update
+    authorize User, :admin?
+    @sheikh = Sheikh.find(params[:id])
+    if @sheikh.update(sheikh_params)
+      render json: sheikh_serializer, status: :ok
+    else
+      render json: { message: @sheikh.errors.messages }, status: :bad_request
+    end
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
   end
 
   def destroy
