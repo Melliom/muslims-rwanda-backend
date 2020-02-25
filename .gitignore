@@ -45,5 +45,4 @@ coverage
 # Ignore Editor configuration
 .vscode
 
-# Ignore cloudinary credentials
-config/cloudinary.yml
+.DS_Store

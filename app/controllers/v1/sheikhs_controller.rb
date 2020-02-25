@@ -7,8 +7,8 @@ class V1::SheikhsController < ApplicationController
   end
 
   def create
-    @sheikh = Sheikh.new(sheikh_params)
     authorize User, :admin?
+    @sheikh = Sheikh.new(sheikh_params)
     if @sheikh.save
       render json: sheikh_serializer, status: :ok
     else
