@@ -72,9 +72,32 @@ RSpec.describe V1::SheikhsController, type: :controller do
   end
 
   describe "GET #destroy" do
-    xit "returns http success" do
-      get :destroy
-      expect(response).to have_http_status(:success)
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        delete :destroy, params: { "id" => 1 }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should fail when id is not found" do
+      login_admin
+      it "returns http not_found" do
+        delete :destroy, params: { "id" => 110 }
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Sheikh with 'id'=110")
+      end
+    end
+
+    context "should update successfully" do
+      login_admin
+      it "returns http ok" do
+        @sheikh.save
+        delete :destroy, params: { id: @sheikh.id }
+        expect(response).to have_http_status(:ok)
+        expect(json_body[:message]).to eq("Sheikh successfully archived")
+      end
     end
   end
 end

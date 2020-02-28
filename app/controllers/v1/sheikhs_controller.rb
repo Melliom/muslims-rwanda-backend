@@ -36,6 +36,17 @@ class V1::SheikhsController < ApplicationController
   end
 
   def destroy
+    authorize User, :admin?
+    @sheikh = Sheikh.find(params[:id])
+    if @sheikh.inactive!
+      render json: { message: "Sheikh successfully archived" }, status: :ok
+    else
+      render json: { message: @sheikh.errors.messages }, status: :bad_request
+    end
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
   end
 
   private
