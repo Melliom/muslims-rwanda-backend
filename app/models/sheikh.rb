@@ -6,6 +6,10 @@ class Sheikh < ApplicationRecord
     regular: 0,
     imam: 1,
   }
+  enum status: {
+    active: 0,
+    inactive: 1,
+  }
 
   validates :avatar, content_type: [:png, :jpeg, :jpg], size: { less_than: 3.megabytes, message: "size must be under 3MB" }
   validates :names, presence: :true, length: { minimum: 3, maximum: 100 }
