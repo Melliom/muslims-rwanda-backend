@@ -4,6 +4,11 @@ class V1::SheikhsController < ApplicationController
   include V1::SheikhsHelper
 
   def index
+    authorize User, :admin?
+    @sheikhs = Sheikh.with_attached_avatar.all
+    render json: sheikh_all_serializer, status: :ok
+  rescue => exception
+    render_exception exception
   end
 
   def create
@@ -19,6 +24,13 @@ class V1::SheikhsController < ApplicationController
   end
 
   def show
+    authorize User, :admin?
+    @sheikh = Sheikh.find(params[:id])
+    render json: sheikh_serializer, status: :ok
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
   end
 
   def update
@@ -54,9 +66,17 @@ class V1::SheikhsController < ApplicationController
       params.permit(:names, :tel, :address, :role, :language, :avatar)
     end
 
-    def sheikh_serializer
-      avatar_path = url_for(@sheikh.avatar) if @sheikh.avatar.attached?
-      @sheikh.language = language_full_name(@sheikh.language)
-      @sheikh.attributes.merge(avatar: avatar_path).except("updated_at")
+    def sheikh_serializer(sheikh = @sheikh)
+      avatar_path = url_for(sheikh.avatar) if sheikh.avatar.attached?
+      sheikh.language = language_full_name(sheikh.language)
+      sheikh.attributes.merge(avatar: avatar_path).except("updated_at")
+    end
+
+    def sheikh_all_serializer
+      if @sheikhs
+        @sheikhs.map do |sheikh|
+          sheikh_serializer(sheikh)
+        end
+      end
     end
 end
