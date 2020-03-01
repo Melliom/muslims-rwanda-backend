@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :sheikh do
     names { Faker::Name.name  }
-    tel { "0789863456" }
+    telephone { "078" + Faker::PhoneNumber.subscriber_number(length: 7) }
     address { Faker::Address.street_address  }
 
     trait :with_avatar do

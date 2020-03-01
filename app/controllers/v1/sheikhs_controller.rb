@@ -63,7 +63,7 @@ class V1::SheikhsController < ApplicationController
 
   private
     def sheikh_params
-      params.permit(:names, :tel, :address, :role, :language, :avatar)
+      params.permit(:names, :telephone, :address, :role, :language, :avatar)
     end
 
     def sheikh_serializer(sheikh = @sheikh)
