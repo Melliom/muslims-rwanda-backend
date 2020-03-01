@@ -23,9 +23,9 @@ RSpec.describe Sheikh, type: :model do
   end
 
   it "tel should be 10 character" do
-    @sheikh.tel = "99349"
+    @sheikh.telephone = "99349"
     @sheikh.save
-    expect(@sheikh.errors[:tel].first).to eq("is the wrong length (should be 10 characters)")
+    expect(@sheikh.errors[:telephone].first).to eq("is the wrong length (should be 10 characters)")
     expect(@sheikh).to_not be_valid
   end
 

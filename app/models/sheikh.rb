@@ -13,5 +13,5 @@ class Sheikh < ApplicationRecord
 
   validates :avatar, content_type: [:png, :jpeg, :jpg], size: { less_than: 3.megabytes, message: "size must be under 3MB" }
   validates :names, presence: :true, length: { minimum: 3, maximum: 100 }
-  validates :tel, length: { is: 10 }
+  validates :telephone, length: { is: 10 }, uniqueness: true
 end
