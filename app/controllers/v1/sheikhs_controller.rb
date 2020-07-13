@@ -14,8 +14,13 @@ class V1::SheikhsController < ApplicationController
   def create
     authorize User, :admin?
     @sheikh = Sheikh.new(sheikh_params)
-    if @sheikh.save
-      render json: sheikh_serializer, status: :ok
+    if @sheikh.valid?
+      @sheikh.avatar = params[:avatar]
+      if @sheikh.save
+        render json: sheikh_serializer, status: :ok
+      else
+        render json: { message: @sheikh.errors.messages }, status: :bad_request
+      end
     else
       render json: { message: @sheikh.errors.messages }, status: :bad_request
     end
@@ -63,7 +68,7 @@ class V1::SheikhsController < ApplicationController
 
   private
     def sheikh_params
-      params.permit(:names, :telephone, :address, :role, :language, :avatar)
+      params.permit(:names, :telephone, :address, :role, :language)
     end
 
     def sheikh_serializer(sheikh = @sheikh)
