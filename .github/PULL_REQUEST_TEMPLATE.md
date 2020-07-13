@@ -11,18 +11,18 @@ Please select the relevant option
 ## How Has This Been Tested?
 Please describe the tests that you ran to verify your change
 - [ ] End to end
-- [ ] Integration
+- [x] Integration
 - [ ] N/A
 
 ## How to Manually Test
 
 ## Checklist:
-- [ ] My code follows the style guidelines of this project
-- [ ] I have linted my code prior to submission
+- [x] My code follows the style guidelines of this project
+- [x] I have linted my code prior to submission
 - [ ] I have made corresponding changes to the documentation
-- [ ] My changes generates no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
+- [x] My changes generates no new warnings
+- [x] I have added tests that prove my fix is effective or that my feature works
+- [x] New and existing unit tests pass locally with my changes
 
 ## Design prototype link(s) (for UI stories)
 
@@ -30,4 +30,9 @@ Please describe the tests that you ran to verify your change
 
 ## Screenshots
 
-## JIRA
+## TRELLO
+[MRA-]()
+
+<!-- Markdown link & img dfn's -->
+
+[trello-image]: https://img.icons8.com/color/30/000000/trello.png
