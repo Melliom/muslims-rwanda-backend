@@ -58,14 +58,15 @@ Run app
 ## Usage
 
 The collection of request is shared on postman 
+
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/125e6e5749fb8ab5962a)  
 
 
 ## Authors
 
-> **Hadad Dus** -  [@dusmel](https://github.com/dusmel)
+> **Melliom** / **Hadad Dus** -  [@dusmel](https://github.com/dusmel)
 
-> Twitter: [@dusmel](https://twitter.com/hadad__)
+> **Melliom** / Twitter: [@dusmel](https://twitter.com/hadad__)
 
 See also the list of [contributors](https://github.com/Melliom/muslims-rwanda-backend/graphs/contributors) who participated in this project.
 
@@ -84,7 +85,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](/public/LI
 
 
 ## ROADMAP 
-[![TRELLO][trello-image]][trello-invite-link] On Trello
+[![TRELLO][trello-image]][trello-invite-link] 
 
 <!-- Markdown link & img dfn's -->
 [convention-branch]: https://github.com/dusmel/engineering-playbook/blob/master/5.%20Developing/Conventions/readme.md#branch-naming
