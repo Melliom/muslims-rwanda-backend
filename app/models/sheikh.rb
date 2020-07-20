@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 class Sheikh < ApplicationRecord
+  include PgSearch::Model
+
+  pg_search_scope :search,
+  against: [:names, :telephone],
+  using: {
+    trigram: {
+      threshold: 0.2
+    }
+  },
+  ranked_by: ":trigram"
   has_one_attached :avatar
   enum role: {
     regular: 0,

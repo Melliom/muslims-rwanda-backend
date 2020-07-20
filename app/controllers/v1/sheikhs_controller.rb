@@ -66,6 +66,16 @@ class V1::SheikhsController < ApplicationController
     render_exception exception
   end
 
+  def search
+    authorize User, :admin?
+    @result = Sheikh.search(params[:keywords])
+    render json: sheikh_all_serializer(@result), status: :ok
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
+  end
+
   private
     def sheikh_params
       params.permit(:names, :telephone, :address, :role, :language)
@@ -77,9 +87,9 @@ class V1::SheikhsController < ApplicationController
       sheikh.attributes.merge(avatar: avatar_path).except("updated_at")
     end
 
-    def sheikh_all_serializer
-      if @sheikhs
-        @sheikhs.map do |sheikh|
+    def sheikh_all_serializer(sheikhs = @sheikhs)
+      if sheikhs
+        sheikhs.map do |sheikh|
           sheikh_serializer(sheikh)
         end
       end
