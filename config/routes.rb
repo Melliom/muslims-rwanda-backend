@@ -24,7 +24,11 @@ Rails.application.routes.draw do
   namespace :v1, defaults: { format: "json" } do
     get "things", to: "things#index"
     get "taks/index"
-    resources :sheikhs
+    resources :sheikhs do
+      collection do
+        get "search"
+      end
+    end
   end
 
   # Forward all requests to StaticController#index but requests

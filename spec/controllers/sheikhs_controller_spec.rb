@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe V1::SheikhsController, type: :controller do
   before :each do
     @sheikh = FactoryBot.build(:sheikh)
+    @abdul = FactoryBot.create(:abdul)
   end
 
   describe "GET #index" do
@@ -134,6 +135,35 @@ RSpec.describe V1::SheikhsController, type: :controller do
         delete :destroy, params: { id: @sheikh.id }
         expect(response).to have_http_status(:ok)
         expect(json_body[:message]).to eq("Sheikh successfully archived")
+      end
+    end
+  end
+
+  describe "GET #search" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        get :search, params: { "keywords" => "abdul" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should search with name successfully" do
+      login_admin
+      it "returns http ok" do
+        get :search, params: { "keywords" => "abdul" }
+        expect(response).to have_http_status(:ok)
+        expect(json_body.sample&.fetch(:names)).to eq(@abdul.names)
+      end
+    end
+
+    context "should search by phone number successfully" do
+      login_admin
+      it "returns http ok" do
+        get :search, params: { "keywords" => " abd 0782030" }
+        expect(response).to have_http_status(:ok)
+        expect(json_body.sample&.fetch(:names)).to eq(@abdul.names)
       end
     end
   end
