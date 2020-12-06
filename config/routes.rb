@@ -20,13 +20,17 @@ Rails.application.routes.draw do
     put "/signup/admin", to: "registrations#register_admin"
   end
   get "hello/index"
-  root "home#index"
-  namespace :v1, defaults: { format: "json" } do
-    get "things", to: "things#index"
-    get "taks/index"
-    resources :sheikhs do
-      collection do
-        get "search"
+  root "single_page#index"
+  scope "/api" do
+    namespace :v1, defaults: { format: "json" } do
+      get "things", to: "things#index"
+      get "taks/index"
+      resources :sheikhs do
+        collection do
+          get "search"
+        end
+      end
+      resources :mosques do
       end
     end
   end

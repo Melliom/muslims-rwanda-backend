@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_214629) do
+ActiveRecord::Schema.define(version: 2020_12_06_224619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -45,6 +45,18 @@ ActiveRecord::Schema.define(version: 2020_07_14_214629) do
     t.index ["jti"], name: "index_jwt_blacklists_on_jti"
   end
 
+  create_table "mosques", force: :cascade do |t|
+    t.string "name"
+    t.decimal "lng", precision: 10, scale: 6
+    t.decimal "lat", precision: 10, scale: 6
+    t.integer "size", default: 0
+    t.string "momo_number"
+    t.string "address"
+    t.string "cashpower"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sheikhs", force: :cascade do |t|
     t.string "names"
     t.string "telephone"
@@ -54,6 +66,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_214629) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 0
+    t.bigint "mosque_id"
+    t.index ["mosque_id"], name: "index_sheikhs_on_mosque_id"
     t.index ["names"], name: "index_sheikhs_on_names", opclass: :gin_trgm_ops, using: :gin
     t.index ["telephone"], name: "index_sheikhs_on_telephone", opclass: :gin_trgm_ops, using: :gin
   end
@@ -94,4 +108,5 @@ ActiveRecord::Schema.define(version: 2020_07_14_214629) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "sheikhs", "mosques"
 end
