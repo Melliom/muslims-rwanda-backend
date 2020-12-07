@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class V1::MosquesController < ApplicationController
+  before_action :admin?
+
   def index
-    authorize User, :admin?
     @mosques = Mosque.all
     render json: @mosques, status: :ok
   rescue => exception
@@ -10,7 +11,6 @@ class V1::MosquesController < ApplicationController
   end
 
   def create
-    authorize User, :admin?
     @mosque = Mosque.new(mosque_params)
     if @mosque.save
       render json: @mosque, status: :ok
@@ -20,6 +20,16 @@ class V1::MosquesController < ApplicationController
   rescue => exception
     render_exception exception
   end
+
+  def show
+    @mosque = Mosque.find(params[:id])
+    render json: @mosque, status: :ok
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
+  end
+
 
 
   private

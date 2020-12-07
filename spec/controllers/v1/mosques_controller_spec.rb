@@ -47,4 +47,34 @@ RSpec.describe V1::MosquesController, type: :controller do
       end
     end
   end
+
+  describe "GET #show" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        get :show, params: { "id" => 1 }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should fail when id is not found" do
+      login_admin
+      it "returns http not_found" do
+        get :show, params: { "id" => 0 }
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Mosque with 'id'=0")
+      end
+    end
+
+    context "should get one successfully" do
+      login_admin
+      it "returns http ok" do
+        @mosque.save
+        get :show, params: { "id" => @mosque.id }
+        expect(response).to have_http_status(:ok)
+        expect(json_body[:name]).to eq(@mosque.name)
+      end
+    end
+  end
 end
