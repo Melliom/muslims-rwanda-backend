@@ -4,7 +4,7 @@ class V1::MosquesController < ApplicationController
   before_action :admin?
 
   def index
-    @mosques = Mosque.all
+    @mosques = Mosque.all_active
     render json: render_response(resource: @mosques), status: :ok
   rescue => exception
     render_exception exception
@@ -22,7 +22,7 @@ class V1::MosquesController < ApplicationController
   end
 
   def show
-    @mosque = Mosque.find(params[:id])
+    @mosque = Mosque.find_active(params[:id])
     render json: render_response(resource: @mosque), status: :ok
   rescue ActiveRecord::RecordNotFound => exception
     render_exception exception, :not_found
@@ -32,12 +32,30 @@ class V1::MosquesController < ApplicationController
 
 
   def update
-    @mosque = Mosque.find(params[:id])
+    @mosque = Mosque.find_active(params[:id])
     if @mosque.update(mosque_params)
       render json:
         render_response(
           message: "Mosque updated successfully",
           resource: @mosque
+        ),
+        status: :ok
+    else
+      render json: { message: @mosque.errors.messages }, status: :bad_request
+    end
+  rescue ActiveRecord::RecordNotFound => exception
+    render_exception exception, :not_found
+  rescue => exception
+    render_exception exception
+  end
+
+  def destroy
+    @mosque = Mosque.find_active(params[:id])
+    @mosque.archived = true
+    if @mosque.save
+      render json:
+        render_response(
+          message: "Mosque #{@mosque.name} deleted successfully"
         ),
         status: :ok
     else

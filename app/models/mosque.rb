@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Mosque < ApplicationRecord
+  scope :all_active, -> { where(archived: false) }
+  scope :find_active, -> (id) { all_active.find(id) }
   has_one :imam, class_name: "Sheikh", foreign_key: "mosque_id", dependent: :nullify,  inverse_of: :mosque
   validates :name, presence: :true, length: { minimum: 3, maximum: 100 }
   validates :address, presence: :true, length: { minimum: 3, maximum: 100 }

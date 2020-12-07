@@ -107,4 +107,34 @@ RSpec.describe V1::MosquesController, type: :controller do
       end
     end
   end
+
+  describe "DELETE #destroy" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        delete :destroy, params: { "id" => 1 }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should fail when id is not found" do
+      login_admin
+      it "returns http not_found" do
+        delete :destroy, params: { "id" => 0 }
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Mosque with 'id'=0")
+      end
+    end
+
+    context "should update successfully" do
+      login_admin
+      it "returns http ok" do
+        @mosque.save
+        delete :destroy, params: { id: @mosque.id }
+        expect(response).to have_http_status(:ok)
+        expect(json_body[:message]).to eq("Mosque #{@mosque.name} deleted successfully")
+      end
+    end
+  end
 end
