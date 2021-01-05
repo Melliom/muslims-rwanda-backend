@@ -68,6 +68,20 @@ class V1::MosquesController < ApplicationController
   end
 
 
+  def add_imam
+    mosque  = Mosque.all_active.find(params[:mosque_id])
+    if mosque.imam = Sheikh.find(params[:sheikh_id])
+      render json:
+        render_response(
+          message: "Imam added successfully"
+        ),
+        status: :ok
+    else
+      render json: { message: mosque.errors.messages }, status: :bad_request
+    end
+  rescue => exception
+    render_exception exception
+  end
 
   private
     def mosque_params

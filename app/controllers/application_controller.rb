@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  rescue_from Pundit::NotAuthorizedError do |exception|
+  rescue_from Exception do |exception|
     render_exception exception
   end
 end

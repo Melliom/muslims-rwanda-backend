@@ -133,7 +133,48 @@ RSpec.describe V1::MosquesController, type: :controller do
         @mosque.save
         delete :destroy, params: { id: @mosque.id }
         expect(response).to have_http_status(:ok)
-        expect(json_body[:message]).to eq("Mosque #{@mosque.name} deleted successfully")
+        expect(json_body[:message]).to eq("Mosque #{@mosque.name.downcase} deleted successfully")
+      end
+    end
+  end
+
+  describe "Add Imam #add_imam" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        put :add_imam, params: { "mosque_id" => 1 }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should fail when when mosque is not found" do
+      login_admin
+      it "returns http not_found" do
+        put :add_imam, params: { "mosque_id" => 0 }
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Mosque with 'id'=0")
+      end
+    end
+
+    context "should fail when sheikh id is not found" do
+      login_admin
+      it "returns http not_found" do
+        @mosque.save
+        put :add_imam, params: { "mosque_id":  @mosque.id,  "sheikh_id": 100 }
+        expect(response).to have_http_status(:not_found)
+        expect(json_body[:message]).to eq("Couldn't find Sheikh with 'id'=100")
+      end
+    end
+
+    context "should add imam successfully" do
+      login_admin
+      it "returns http ok" do
+        @mosque.save
+        @sheikh = FactoryBot.create(:sheikh)
+        put :add_imam, params: { mosque_id:  @mosque.id,  sheikh_id: @sheikh.id }
+        expect(response).to have_http_status(:ok)
+        expect(@mosque.imam).to eql(Sheikh.find(@sheikh.id))
       end
     end
   end

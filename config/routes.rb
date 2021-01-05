@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         end
       end
       resources :mosques do
+        put "add_imam", to: "mosques#add_imam"
       end
     end
   end

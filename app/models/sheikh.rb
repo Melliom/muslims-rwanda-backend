@@ -11,6 +11,7 @@ class Sheikh < ApplicationRecord
     }
   },
   ranked_by: ":trigram"
+
   has_one_attached :avatar
   belongs_to :mosque, optional: true
   enum role: {
