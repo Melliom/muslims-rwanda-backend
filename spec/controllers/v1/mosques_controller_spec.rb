@@ -178,4 +178,29 @@ RSpec.describe V1::MosquesController, type: :controller do
       end
     end
   end
+
+
+  describe "Search mosque" do
+    context "should fail without authorization" do
+      login_user
+      it "returns http unauthorized" do
+        get :index, params: { "search" => "hello" }
+        expect(response).to have_http_status(:unauthorized)
+        expect(json_body[:message]).to eq("You are not authorized to perform this action.")
+      end
+    end
+
+    context "should succeed with admin access" do
+      login_admin
+      it "returns http success" do
+        @mosque = FactoryBot.create_list(:mosque, 6)
+        @nuur = FactoryBot.build(:mosque)
+        @nuur.name = "Nuur"
+        @nuur.save
+        get :index, params: { "search" => "nuu" }
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].first.fetch(:name)).to eq("Nuur")
+      end
+    end
+  end
 end

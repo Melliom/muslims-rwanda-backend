@@ -5,6 +5,7 @@ class V1::MosquesController < ApplicationController
 
   def index
     @mosques = Mosque.all_active
+    return search if params[:search]
     render json: render_response(resource: @mosques), status: :ok
   rescue => exception
     render_exception exception
@@ -83,8 +84,19 @@ class V1::MosquesController < ApplicationController
     render_exception exception
   end
 
+
   private
     def mosque_params
       params.permit(:name, :lng, :lat, :address, :momo_number, :cashpower, :size)
+    end
+
+    def search
+      @result = Mosque.search(params[:search])
+      render json: render_response(
+        resource: @result
+      ),
+      status: :ok
+    rescue => exception
+      render_exception exception
     end
 end
