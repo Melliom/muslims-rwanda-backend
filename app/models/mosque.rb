@@ -2,10 +2,11 @@
 
 class Mosque < ApplicationRecord
   include PgSearch::Model
+  include Filterable
 
   scope :all_active, -> { where(archived: false) }
   scope :find_active, -> (id) { all_active.find(id) }
-  pg_search_scope :search,
+  pg_search_scope :filter_by_search,
   against: :name,
   using: {
     trigram: {
@@ -13,6 +14,11 @@ class Mosque < ApplicationRecord
     }
   },
   ranked_by: ":trigram"
+  scope :filter_by_imam, -> (imam_id) { self.joins(:imam).where(sheikhs: { id: imam_id }) }
+  scope :filter_by_size, -> (size) { where(size: size) }
+
+
+
 
 
   has_one :imam, class_name: "Sheikh", foreign_key: "mosque_id", dependent: :nullify,  inverse_of: :mosque

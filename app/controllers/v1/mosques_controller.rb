@@ -5,8 +5,8 @@ class V1::MosquesController < ApplicationController
   after_action -> { pagy_headers_merge(@pagy) if @pagy && !Rails.env.test? }
 
   def index
-    @pagy, @mosques = if params[:search]
-      pagy(Mosque.search(params[:search]), page: 1)
+    @pagy, @mosques = if filtering_params
+      pagy(Mosque.filter(filtering_params), page: 1)
     else
       pagy(Mosque.all_active)
     end
@@ -92,5 +92,9 @@ class V1::MosquesController < ApplicationController
   private
     def mosque_params
       params.permit(:name, :lng, :lat, :address, :momo_number, :cashpower, :size)
+    end
+
+    def filtering_params
+      params.slice(:imam, :size, :search)
     end
 end

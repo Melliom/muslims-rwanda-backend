@@ -203,4 +203,22 @@ RSpec.describe V1::MosquesController, type: :controller do
       end
     end
   end
+
+  describe "filter mosque" do
+    context "should succeed with admin access" do
+      login_admin
+      it "returns http success" do
+        @imam = FactoryBot.create(:sheikh)
+        @mosque = FactoryBot.create_list(:mosque, 6)
+        @nuur = FactoryBot.build(:mosque)
+        @nuur.imam = @imam
+        @nuur.large!
+        @nuur.save
+        get :index, params: { "size": "large", "imam": @imam.id }
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].first.fetch(:size)).to eq("large")
+        expect(json_body[:data].first.fetch(:id)).to eq(@imam.mosque.id)
+      end
+    end
+  end
 end
