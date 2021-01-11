@@ -3,6 +3,8 @@
 class Sheikh < ApplicationRecord
   include PgSearch::Model
 
+  scope :all_active, -> { where(status: "active") }
+  scope :find_active, -> (id) { all_active.find(id) }
   pg_search_scope :search,
   against: [:names, :telephone],
   using: {

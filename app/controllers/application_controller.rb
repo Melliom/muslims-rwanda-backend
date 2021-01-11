@@ -3,8 +3,13 @@
 class ApplicationController < ActionController::Base
   include Pundit
   include ApplicationHelper
+  include Pagy::Frontend
+  include Pagy::Backend
   protect_from_forgery
   before_action :authenticate_user!
+  require "pagy/extras/metadata"
+  require "pagy/extras/headers"
+
 
   def render_resource(resource)
     if resource.errors.empty?

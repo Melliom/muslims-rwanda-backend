@@ -14,7 +14,7 @@ module ApplicationHelper
     render json: { message: exception }, status: status
   end
 
-  def render_response(message: nil, resource: nil)
-    { message: message&.capitalize, data: resource }.compact
+  def render_response(message: nil, resource: nil, meta: nil)
+    { message: message&.capitalize, data: resource, meta: meta }.compact
   end
 end

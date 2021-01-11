@@ -2,10 +2,14 @@
 
 class V1::MosquesController < ApplicationController
   before_action :admin?
+  after_action -> { pagy_headers_merge(@pagy) if @pagy && !Rails.env.test? }
 
   def index
-    @mosques = Mosque.all_active
-    return search if params[:search]
+    @pagy, @mosques = if params[:search]
+      pagy(Mosque.search(params[:search]), page: 1)
+    else
+      pagy(Mosque.all_active)
+    end
     render json: render_response(resource: @mosques), status: :ok
   rescue => exception
     render_exception exception
@@ -88,15 +92,5 @@ class V1::MosquesController < ApplicationController
   private
     def mosque_params
       params.permit(:name, :lng, :lat, :address, :momo_number, :cashpower, :size)
-    end
-
-    def search
-      @result = Mosque.search(params[:search])
-      render json: render_response(
-        resource: @result
-      ),
-      status: :ok
-    rescue => exception
-      render_exception exception
     end
 end
