@@ -2,11 +2,16 @@
 
 class V1::SheikhsController < ApplicationController
   include V1::SheikhsHelper
+  after_action { pagy_headers_merge(@pagy) if @pagy && !Rails.env.test? }
 
   def index
     authorize User, :admin?
-    @sheikhs = Sheikh.with_attached_avatar.all
-    render json: sheikh_all_serializer, status: :ok
+    @pagy, @sheikhs = if params[:search]
+      pagy(Sheikh.with_attached_avatar.search(params[:search]), page: 1)
+    else
+      pagy(Sheikh.all_active.with_attached_avatar)
+    end
+    render json: render_response(resource: sheikh_all_serializer), status: :ok
   rescue => exception
     render_exception exception
   end

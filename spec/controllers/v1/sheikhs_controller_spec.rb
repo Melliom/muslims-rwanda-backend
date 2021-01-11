@@ -24,7 +24,7 @@ RSpec.describe V1::SheikhsController, type: :controller do
         @sheikhs = FactoryBot.create_list(:sheikh, 6)
         get :index
         expect(response).to have_http_status(:success)
-        expect(json_body[0]).to have_key(:id)
+        expect(json_body[:data].first).to have_key(:id)
       end
     end
   end

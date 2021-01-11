@@ -52,6 +52,8 @@ gem 'pg_search', '~> 2.3', '>= 2.3.2'
 
 
 gem "cloudinary"
+gem 'pagy', '~> 3.5'
+
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.1.0", require: false

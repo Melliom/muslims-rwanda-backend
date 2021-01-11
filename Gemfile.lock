@@ -204,6 +204,7 @@ GEM
     ori (0.1.0)
     orm_adapter (0.5.0)
     os (1.0.1)
+    pagy (3.10.0)
     paint (2.1.1)
     parallel (1.18.0)
     parser (2.6.5.0)
@@ -405,6 +406,7 @@ DEPENDENCIES
   irbtools
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
+  pagy (~> 3.5)
   pg
   pg_search (~> 2.3, >= 2.3.2)
   pry

@@ -3,6 +3,8 @@
 class Sheikh < ApplicationRecord
   include PgSearch::Model
 
+  scope :all_active, -> { where(status: "active") }
+  scope :find_active, -> (id) { all_active.find(id) }
   pg_search_scope :search,
   against: [:names, :telephone],
   using: {
@@ -11,7 +13,9 @@ class Sheikh < ApplicationRecord
     }
   },
   ranked_by: ":trigram"
+
   has_one_attached :avatar
+  belongs_to :mosque, optional: true
   enum role: {
     regular: 0,
     imam: 1,

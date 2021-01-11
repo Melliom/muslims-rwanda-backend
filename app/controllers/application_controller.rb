@@ -3,8 +3,13 @@
 class ApplicationController < ActionController::Base
   include Pundit
   include ApplicationHelper
+  include Pagy::Frontend
+  include Pagy::Backend
   protect_from_forgery
   before_action :authenticate_user!
+  require "pagy/extras/metadata"
+  require "pagy/extras/headers"
+
 
   def render_resource(resource)
     if resource.errors.empty?
@@ -26,8 +31,13 @@ class ApplicationController < ActionController::Base
       }, status: status
   end
 
+  def admin?
+    authorize User, :admin?
+  end
+
+
   def generate_token(email)
-    exp = Time.now.to_i + 2 * (3600 * 24)
+    exp = Time.now.to_i + 7 * (3600 * 24)
     payload = { data: email, exp: exp }
     JWT.encode(payload, ENV["DEVISE_SECRET_KEY"], "HS256")
   end
@@ -48,5 +58,9 @@ class ApplicationController < ActionController::Base
       status: false,
       message: "Invalid token"
     }
+  end
+
+  rescue_from Exception do |exception|
+    render_exception exception
   end
 end
