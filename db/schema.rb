@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_115416) do
+ActiveRecord::Schema.define(version: 2021_01_14_080553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 2021_01_08_115416) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "announcements", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "jwt_blacklists", force: :cascade do |t|
