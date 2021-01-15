@@ -271,6 +271,10 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rspec (3.9.0)
+      rspec-core (~> 3.9.0)
+      rspec-expectations (~> 3.9.0)
+      rspec-mocks (~> 3.9.0)
     rspec-core (3.9.0)
       rspec-support (~> 3.9.0)
     rspec-expectations (3.9.0)
@@ -415,6 +419,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.2)
   react-rails
+  rspec (~> 3.9)
   rspec-rails (~> 3.8)
   rubocop-performance
   rubocop-rails
