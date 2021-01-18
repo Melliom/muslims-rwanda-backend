@@ -74,6 +74,7 @@ group :development do
   gem "rubocop-rails"
   gem "pry"
   gem "irbtools"
+  gem 'prettier'
 end
 
 group :test do

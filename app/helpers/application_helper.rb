@@ -10,7 +10,7 @@ module ApplicationHelper
              else
                status
     end
-    exception = exception.to_s.split("[WHERE")[0]&.strip
+    exception = exception.to_s.split("[WHERE")[0]&.strip if exception.to_s&.include? "[WHERE"
     render json: { message: exception }, status: status
   end
 

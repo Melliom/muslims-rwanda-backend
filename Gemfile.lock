@@ -213,6 +213,7 @@ GEM
     pg_search (2.3.2)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
+    prettier (1.4.0)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
@@ -413,6 +414,7 @@ DEPENDENCIES
   pagy (~> 3.5)
   pg
   pg_search (~> 2.3, >= 2.3.2)
+  prettier
   pry
   puma (~> 3.12)
   pundit
@@ -441,4 +443,4 @@ RUBY VERSION
    ruby 2.5.3p105
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
