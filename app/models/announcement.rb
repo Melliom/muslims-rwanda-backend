@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Announcement < ApplicationRecord
+  include PgSearch::Model
+  include Filterable
   scope :all_active, -> { where(status: :active).order("created_at") }
   scope :find_active, -> (id) { 
     announcement = where(id: id, status: :active)
@@ -14,6 +16,16 @@ class Announcement < ApplicationRecord
     active: 0,
     archived: 1,
   }
+
+  pg_search_scope :filter_by_search,
+  against: :title,
+  using: {
+    trigram: {
+      threshold: 0.2
+    }
+  },
+  ranked_by: ":trigram"
+  scope :filter_by_tags, -> (tags) { all_active.where("tags @> ARRAY[?]::varchar[]", tags) }
 
   def validate_tag
     accepted_tags = YAML.load_file("db/data/announcement_tags.yaml")

@@ -4,7 +4,11 @@ class V1::AnnouncementsController < ApplicationController
   before_action :admin?, except: :index
 
   def index
-    @pagy, @announcements = pagy(Announcement.all_active)
+    @pagy, @announcements = if filtering_params.empty?
+      pagy(Announcement.all_active)
+    else
+      pagy(Announcement.filter(filtering_params), page: 1) 
+    end
     render json: render_response(resource: @announcements), status: :ok
   rescue => exception
     render_exception exception
@@ -55,5 +59,9 @@ class V1::AnnouncementsController < ApplicationController
   private
     def announcement_params
       params.require(:announcement).permit(:title, :description, tags: [])
+    end
+
+    def filtering_params
+      params.slice(:tags, :search)
     end
 end

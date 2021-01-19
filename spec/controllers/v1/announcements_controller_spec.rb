@@ -162,4 +162,35 @@ RSpec.describe V1::AnnouncementsController, type: :controller do
       end
     end
   end
+
+  describe "Search announcement" do
+    context "should succeed" do
+      login_user
+      it "returns http success" do
+        @announcement = FactoryBot.create_list(:announcement, 6)
+        @random_announcement = FactoryBot.build(:announcement)
+        @random_announcement.title = "some random title"
+        @random_announcement.save
+        get :index, params: { "search" => "random" }
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].first.fetch(:title)).to eq(@random_announcement.title)
+      end
+    end
+  end
+
+  describe "filter announcement by tags" do
+    context "should succeed" do
+      login_admin
+      it "returns http success" do
+        @announcement = FactoryBot.create_list(:announcement, 6)
+        @random_announcement = FactoryBot.build(:announcement)
+        @random_announcement.tags = ["fund raise", "announcement"]
+        @random_announcement.save
+        get :index, params: { "tags": ["fund raise"] }
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].first.fetch(:tags)).to include("fund raise")
+        expect(json_body[:data].first.fetch(:id)).to eq(@random_announcement.id)
+      end
+    end
+  end
 end
