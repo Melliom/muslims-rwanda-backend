@@ -8,9 +8,21 @@ RSpec.describe V1::AnnouncementsController, type: :controller do
   end
 
   describe "GET #index" do
-    xit "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
+    context "should fail without authorization" do
+      it "returns http unauthorized for not logged in users" do
+        get :index
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context "should succeed with admin access" do
+      login_user
+      it "returns http success" do
+        @announcements = FactoryBot.create_list(:announcement, 6)
+        get :index
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].size).to be(6)
+      end
     end
   end
 

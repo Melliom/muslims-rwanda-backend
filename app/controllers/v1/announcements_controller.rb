@@ -4,6 +4,10 @@ class V1::AnnouncementsController < ApplicationController
   before_action :admin?, except: :index
 
   def index
+    @announcements = Announcement.all_active
+    render json: render_response(resource: @announcements), status: :ok
+  rescue => exception
+    render_exception exception
   end
 
   def create

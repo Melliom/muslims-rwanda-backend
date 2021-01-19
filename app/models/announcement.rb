@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Announcement < ApplicationRecord
+  scope :all_active, -> { where(status: :active).order("created_at") }
   scope :find_active, -> (id) { 
     announcement = where(id: id, status: :active)
     raise ActiveRecord::RecordNotFound.new  "Couldn't find Announcement with 'id'=#{id}" if announcement.empty?
