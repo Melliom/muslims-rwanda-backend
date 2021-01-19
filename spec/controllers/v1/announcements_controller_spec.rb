@@ -24,6 +24,16 @@ RSpec.describe V1::AnnouncementsController, type: :controller do
         expect(json_body[:data].size).to be(6)
       end
     end
+
+    context "should paginate the response" do
+      login_user
+      it "returns http success" do
+        @announcements = FactoryBot.create_list(:announcement, 30)
+        get :index
+        expect(response).to have_http_status(:success)
+        expect(json_body[:data].size).to be(20)
+      end
+    end
   end
 
   describe "POST #create" do
