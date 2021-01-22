@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   require "pagy/extras/metadata"
   require "pagy/extras/headers"
+  after_action -> { pagy_headers_merge(@pagy) if @pagy && !Rails.env.test? }
 
 
   def render_resource(resource)

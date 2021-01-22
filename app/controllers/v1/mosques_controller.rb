@@ -2,13 +2,12 @@
 
 class V1::MosquesController < ApplicationController
   before_action :admin?
-  after_action -> { pagy_headers_merge(@pagy) if @pagy && !Rails.env.test? }
 
   def index
-    @pagy, @mosques = if filtering_params
-      pagy(Mosque.filter(filtering_params), page: 1)
-    else
+    @pagy, @mosques = if filtering_params.empty?
       pagy(Mosque.all_active)
+    else
+      pagy(Mosque.filter(filtering_params), page: 1)
     end
     render json: render_response(resource: @mosques), status: :ok
   rescue => exception

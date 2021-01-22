@@ -7,7 +7,7 @@ class Mosque < ApplicationRecord
   scope :all_active, -> { where(archived: false) }
   scope :find_active, -> (id) { all_active.find(id) }
   pg_search_scope :filter_by_search,
-  against: :name,
+  against: [:name, :address],
   using: {
     trigram: {
       threshold: 0.2

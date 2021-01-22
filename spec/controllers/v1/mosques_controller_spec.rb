@@ -204,7 +204,7 @@ RSpec.describe V1::MosquesController, type: :controller do
     end
   end
 
-  describe "filter mosque" do
+  describe "filter mosque by size and imam" do
     context "should succeed with admin access" do
       login_admin
       it "returns http success" do
