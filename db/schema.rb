@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_19_195832) do
+ActiveRecord::Schema.define(version: 2021_01_22_190456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -46,6 +47,15 @@ ActiveRecord::Schema.define(version: 2021_01_19_195832) do
     t.string "tags", array: true
     t.index ["tags"], name: "index_announcements_on_tags"
     t.index ["title"], name: "index_announcements_on_title", opclass: :gin_trgm_ops, using: :gin
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "content"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
   create_table "jwt_blacklists", force: :cascade do |t|
