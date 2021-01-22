@@ -3,6 +3,7 @@
 class Announcement < ApplicationRecord
   include PgSearch::Model
   include Filterable
+  include Commentable
   scope :all_active, -> { where(status: :active).order("created_at") }
   scope :find_active, -> (id) { 
     announcement = where(id: id, status: :active)
