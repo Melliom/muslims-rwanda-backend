@@ -39,7 +39,8 @@ class V1::AnnouncementsController < ApplicationController
 
   def show
     @announcement = Announcement.find_active(params[:id])
-    render json: render_response(resource: @announcement), status: :ok
+    @announcement_threads=  @announcement.attributes.merge(threads: Comment.threads(@announcement))
+    render json: render_response(resource: @announcement_threads), status: :ok
   rescue => exception
     render_exception exception
   end
