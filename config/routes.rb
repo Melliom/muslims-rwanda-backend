@@ -33,8 +33,9 @@ Rails.application.routes.draw do
       resources :mosques do
         put "add_imam", to: "mosques#add_imam"
       end
-      resources :announcements do
+      resources :announcements, model_name: "Announcement" do
         put "add_tag", to: "announcements#add_tag"
+        resources :comments
       end
     end
   end
