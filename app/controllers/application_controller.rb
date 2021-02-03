@@ -61,6 +61,12 @@ class ApplicationController < ActionController::Base
     }
   end
 
+  def get_parent
+    parent_class = params[:model_name].constantize
+    parent_foreing_key = params[:model_name].foreign_key
+    @parent = parent_class.find(params[parent_foreing_key])
+  end
+
   rescue_from Exception do |exception|
     render_exception exception
   end
